@@ -12,8 +12,10 @@ rng = np.random.RandomState(42)
 x = 50 * rng.rand(50)
 y = 2 * x - 1 + rng.randn(50)
 
-# 訓練模型
+# 建立模型
 model=LinearRegression(fit_intercept=True)
+
+# 訓練模型
 X = x[:, np.newaxis]
 X.shape
 model.fit(X, y)
