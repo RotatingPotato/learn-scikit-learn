@@ -40,6 +40,7 @@ def main():
     # 繪製圖表。
     plt.plot(df["日期時間"], df["數值"])
     plt.title("halfRand")
+    plt.savefig('randNum.png')
     plt.show()
 
     # 輸出結果。
