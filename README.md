@@ -2,6 +2,9 @@
 > [name=Chien-Hsun, Chang & Kuo-Wei, Wu]
 > National Taichung University of Science and Technology, Taichung, Taiwan.
 
+**[ 目錄 ]**
+> [TOC]
+
 ### 什麼是 Scikit-learn
 Scikit-learn 是 Python 中最流行的機器學習套件之一，它提供了各種各樣的算法，是一種機器學習的解決方案。Scikit-learn 易於使用，性能優良，並且有良好的API、文檔和支援度(Pedregosa et al., 2011)。
 ![SKLearn](https://hackmd.io/_uploads/ry4w-vtyp.png)
@@ -12,7 +15,7 @@ Scikit-learn 是 Python 中最流行的機器學習套件之一，它提供了�
 - **PyTorch** 也是深度學習軟件套件。如果正在開發的應用程序有計算密集型任務，如自然語言處理、計算機視覺等，那麼可以考慮使用 PyTorch。
 - **Keras** 是一個高級深度學習框架，它將許多低級詳細訊息和計算交給 TensorFlow 處理，從而降低了代碼複雜性。如果你的應用/模型需要使用神經網絡來從大量數據中學習，那麼可以考慮使用 Keras。
 
-#### scikit-learn 更適合於機器學習和數據分析的原因主要有以下幾點：
+#### Scikit-learn 更適合於機器學習和數據分析的原因主要有以下幾點：
 - **廣泛的監督學習算法**：Scikit-learn 包含了從線性回歸到隨機梯度下降（SGD）、決策樹、隨機森林等所有你可能聽說過的監督機器學習算法。
 - **無監督學習算法**：包括主成分分析（PCA）、聚類、無監督神經網絡和因子分析等範圍廣泛的機器學習算法。
 - **交叉驗證**：Scikit-learn 提供了多種方法來測試監督模型在未見數據上的準確性。
@@ -27,16 +30,19 @@ Scikit-learn 是 Python 中最流行的機器學習套件之一，它提供了�
 3. 訓練資料(包含訓練及測試兩階段)
 4. 將訓練完成的知料模型來預測未來資料
 
-## 使用 Scikit-learn
+## 使用 Scikit-learn 做線性迴歸
 隨著 Scikit-learn 文件測試並練習使用 Scikit-learn 套件
 + [GitHub Repo](https://github.com/RotatingPotato/learn-scikit-learn)
-#### 1.安裝sckikscikit-learn
+
+### 單變數分析
+
+#### 1.安裝 Scikit-learn
 ```bash
-$pip install scikit-learn
+$ pip install scikit-learn
 ```
-#### 2.匯入Scikit-learn
+#### 2.匯入 Scikit-learn
 ```py
-import sklearn
+import sklearn    
 ```
 #### 3.選擇資料
 這邊我們利用 [NumPy](https://numpy.org/) 建立一個簡單的隨機資料並搭配 [Matplotlib](https://matplotlib.org/) 來繪製圖形
@@ -66,10 +72,17 @@ model = LinearRegression()
 ```py
 model.fit(X,y)
 ```
+#### 6.簡易預測
 由於我們建立的資料是一維的陣列所以我們使用 `reshape(-1,1)` 將一維陣列重塑為具有單個特徵的二維陣列再進行預測資料並將資料放到`predict`變數中
 ```py
 X=X.reshape(-1,1)
 predict = model.predict(X[:50,:])
+```
+#### 7.結果
+我們可以把結果也印出來方便我們查看
+```py
+print("模型參數：\n", model.coef_, model.intercept_)
+print("\n預測結果：\n", yfit)
 ```
 輸出圖片
 ```py
@@ -79,13 +92,14 @@ plt.show()
 ```
 ![](https://hackmd.io/_uploads/SkTxfFFk6.png)
 
-上圖中的紅線就是透過線性回歸所找出的線
+上圖中的紅線就是透過線性迴歸所找出的線
 
 ### 完整程式碼如下：
 ```py=
 # 匯入套件
 import sklearn
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 
 # 選擇線性模型
@@ -93,11 +107,11 @@ from sklearn.linear_model import LinearRegression
 
 # 產生資料
 rng = np.random.RandomState(42)
-x = 50 * rng.rand(50)
-y = 2 * x - 1 + rng.randn(50)
+x = 50 * rng.rand(1000)
+y = 2 * x - 1 + rng.randn(1000)
 
 # 建立模型
-model=LinearRegression(fit_intercept=True)
+model = LinearRegression(fit_intercept=True)
 
 # 訓練模型
 X = x[:, np.newaxis]
@@ -109,11 +123,62 @@ xfit = np.linspace(-1, 50)
 Xfit = xfit[:, np.newaxis]
 yfit = model.predict(Xfit)
 
+# 印出結果
+print("模型參數：\n", model.coef_, model.intercept_)
+print("\n預測結果：\n", yfit)
+
 # 繪圖
 plt.scatter(x, y)
 plt.plot(xfit, yfit)
 plt.show()
 ```
+
+### 多項式回歸
+
+#### 所需套件
+```py
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.pipeline import make_pipeline
+```
+#### 導入數據
+```py
+data = pd.read(xxx.csv)
+X = data[['xxx'],['xxx']...['xxx']]
+y= data['xxx']
+```
+#### 拆分訓練集與測試集
+設定 `test_size = 0.3` 訓練集與測試集的比例 0.3=訓練集:測試集=7:3
+`random_state = 0` 代表隨機分割的次數
+```py
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 0)
+```
+#### 訓練集資料迴歸模型
+`PolynomialFeatures(4)`代表多項式的次方數
+合適的次方數可以讓預估結果更貼近數據但過高的次方數會造成過度擬合的情況發生
+
+```py
+regressor = make_pipeline(PolynomialFeatures(4), LinearRegression())
+regressor.fit(X_train, y_train)
+```
+#### 迴歸模型的準確度
+```py
+score = regressor.score(X_test, y_test)
+print('Score: ', score)
+print('Accuracy: ' + str(score*100) + '%')
+```
+#### 預測測試集資料
+```py
+y_pred = regressor.predict(X_test)
+```
+
+## 使用 Scikit-learn 做時間序列迴歸
+隨著 Scikit-learn 文件測試並練習使用 Scikit-learn 套件
++ [GitHub Repo](https://github.com/RotatingPotato/learn-scikit-learn)
 
 ## 參考文獻
 > 1. Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M., & Duchesnay, É. (2011). Scikit-learn: Machine learning in Python. Journal of Machine Learning Research, 12(85), 2825-2830
@@ -125,3 +190,4 @@ plt.show()
 > 7. Top Machine Learning Tools Comparison: TensorFlow, Keras, Scikit-learn, and PyTorch - Zfort Group. https://www.zfort.com/blog/Top-Machine-Learning-Tools-Comparison-TensorFlow-Keras-Scikit-learn-PyTorch.  
 > 8. Scikit Learn - Introduction - Online Tutorials Library. https://www.tutorialspoint.com/scikit_learn/scikit_learn_introduction.htm.
 > 9. https://ithelp.ithome.com.tw/articles/10197248
+> 10.https://github.com/chwang12341/Machine-Learning/blob/master/Linear_Regression/sklearn_learning/Linear_Regression.ipynb
