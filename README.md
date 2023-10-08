@@ -176,10 +176,6 @@ print('Accuracy: ' + str(score*100) + '%')
 y_pred = regressor.predict(X_test)
 ```
 
-## 使用 Scikit-learn 做時間序列迴歸
-隨著 Scikit-learn 文件測試並練習使用 Scikit-learn 套件
-+ [GitHub Repo](https://github.com/RotatingPotato/learn-scikit-learn)
-
 ## 參考文獻
 > 1. Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M., & Duchesnay, É. (2011). Scikit-learn: Machine learning in Python. Journal of Machine Learning Research, 12(85), 2825-2830
 > 2. Scikit-learn vs. TensorFlow vs. PyTorch vs. Keras - Ritza Articles. https://ritza.co/articles/scikit-learn-vs-tensorflow-vs-pytorch-vs-keras/.  
