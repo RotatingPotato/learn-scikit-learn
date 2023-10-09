@@ -11,7 +11,7 @@ from sklearn.pipeline import make_pipeline
 ## 導入區分訓練集與測試集套件
 from sklearn.model_selection import train_test_split
 
-data=pd.read_csv("randNum.csv")
+data=pd.read_csv("GenerateRandomNumber/HalfRand/randNum.csv")
 
 ## 創建數據集
 X=np.array(range(0,100)).reshape(-1,1)
