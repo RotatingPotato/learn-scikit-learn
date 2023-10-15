@@ -151,6 +151,8 @@ data = pd.read(xxx.csv)
 X = data[['xxx'],['xxx']...['xxx']]
 y= data['xxx']
 ```
+![](https://hackmd.io/_uploads/HJgoUP8Za.png)
+
 #### 拆分訓練集與測試集
 設定 `test_size = 0.3` 訓練集與測試集的比例 0.3=訓練集:測試集=7:3
 `random_state = 0` 代表隨機分割的次數
@@ -162,7 +164,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, rando
 合適的次方數可以讓預估結果更貼近數據但過高的次方數會造成過度擬合的情況發生
 
 ```py
-regressor = make_pipeline(PolynomialFeatures(4), LinearRegression())
+regressor = make_pipeline(PolynomialFeatures(7), LinearRegression())
 regressor.fit(X_train, y_train)
 ```
 #### 迴歸模型的準確度
@@ -171,11 +173,102 @@ score = regressor.score(X_test, y_test)
 print('Score: ', score)
 print('Accuracy: ' + str(score*100) + '%')
 ```
-#### 預測測試集資料
-```py
-y_pred = regressor.predict(X_test)
+
+```
+Score:  0.9046649875898924
+Accuracy: 90.46649875898925%
 ```
 
+#### 視覺化
+```py
+plt.plot(X, y)
+plt.plot(X, regressor.predict(X), color = 'red')
+plt.show()
+```
+![](https://hackmd.io/_uploads/SyrpUvU-T.png)
+
+### 多元迴歸
+
+#### 所需套件
+```py
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error
+from sklearn.model_selection import train_test_split
+```
+#### 導入數據
+這邊我們使用的是sklearn提供的玩具資料
+```py
+data=datasets.load_wine().data
+target=datasets.load_wine().target
+```
+#### 拆分訓練集與測試集
+```py
+data_train, data_test, target_train, target_test = train_test_split(data, target, test_size = 0.25, random_state = 0)
+```
+可以試著觀察訓練集與測試集有多少項資料
+```py
+print(data_train.shape)
+print(data_test.shape)
+print(target_train.shape)
+print(target_test.shape)
+```
+```py
+(133, 13)
+(45, 13)
+(133,)
+(45,)
+```
+#### 訓練集資料迴歸模型
+```py
+regr_model = LinearRegression()
+regr_model.fit(data_train, target_train)
+```
+
+#### 測試模型
+```py
+predictions = regr_model.predict(data_test)
+print(predictions.round(1))
+print(target_test)
+```
+```py
+[ 0.1  2.1  0.9  0.5  0.9 -0.1 -0.1  2.2  0.7  1.1  1.5  2.  -0.2  0.5 1.9  0.9  0.1 -0.5  1.5 -0.1  0.5  0.4  0.6  0.7  1.2  1.1  0.8  1.2 0.8  2.  -0.1  0.2  1.2  0.2  0.   0.3  1.7  1.2  1.2  2.   0.1  0.2 0.9  1.   1.3]
+[0 2 1 0 1 1 0 2 1 1 2 2 0 1 2 1 0 0 1 0 1 0 0 1 1 1 1 1 1 2 0 0 1 0 0 0 2 1 1 2 0 0 1 1 1]
+```
+#### 評估模型表現
+決定係數(coefficient of determination)
+決定係數的意思是自變數資料對目標變數(應變數)的解釋能力
+底下的`0.919`和`0.804`代表在訓練集與測試集中自變數對目標變數(應變數)分別有91.9%和80.4%的解釋能力
+兩者數值越近代表模型沒有被過度訓練
+```py
+print(regr_model.score(data_train, target_train).round(3))
+print(regr_model.score(data_test, target_test).round(3))
+```
+```py
+0.919
+0.804
+```
+殘插圖
+透過殘插圖可以更視覺化的觀察模型的預測能力
+如果模型的預測能力越好那預測值就會越接近實際目標值
+散布點就會更靠近Y=0的水平線
+這種圖可以用來比較不同模型的效能
+```py
+x = np.arange(predictions.size)
+y = x*0
+
+plt.scatter(x,predictions-target_test)
+plt.plot(x,y,color='red')
+plt.show()
+```
+![](https://hackmd.io/_uploads/H1Y_erZba.png)
+
+平均絕對誤差(mean absolute error,MAE)
+意即預測值與實際值差距的絕對值的平均
+因此這個值越接近 0 表示差距越小、預測能力越好
+剛好scikit-learn的metrics模組提供了mean_absolute_error( )可以幫助我們計算兩組資料的MAE
 ## 參考文獻
 > 1. Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M., & Duchesnay, É. (2011). Scikit-learn: Machine learning in Python. Journal of Machine Learning Research, 12(85), 2825-2830
 > 2. Scikit-learn vs. TensorFlow vs. PyTorch vs. Keras - Ritza Articles. https://ritza.co/articles/scikit-learn-vs-tensorflow-vs-pytorch-vs-keras/.  
@@ -186,4 +279,4 @@ y_pred = regressor.predict(X_test)
 > 7. Top Machine Learning Tools Comparison: TensorFlow, Keras, Scikit-learn, and PyTorch - Zfort Group. https://www.zfort.com/blog/Top-Machine-Learning-Tools-Comparison-TensorFlow-Keras-Scikit-learn-PyTorch.  
 > 8. Scikit Learn - Introduction - Online Tutorials Library. https://www.tutorialspoint.com/scikit_learn/scikit_learn_introduction.htm.
 > 9. https://ithelp.ithome.com.tw/articles/10197248
-> 10.https://github.com/chwang12341/Machine-Learning/blob/master/Linear_Regression/sklearn_learning/Linear_Regression.ipynb
+> 10. https://github.com/chwang12341/Machine-Learning/blob/master/Linear_Regression/sklearn_learning/Linear_Regression.ipynb
