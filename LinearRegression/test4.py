@@ -3,7 +3,9 @@ import numpy as np
 from sklearn import linear_model
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
-import math
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
 
 #linspace:開始值、終值和元素個數建立表示等差數列的一維陣列
 xx, yy = np.meshgrid(np.linspace(0,10,20), np.linspace(0,100,20))
@@ -22,6 +24,6 @@ ax = fig.add_subplot(projection='3d')
 ax.scatter(xx, yy, zz,color='red') #真實點
 #擬合的平面
 ax.plot_wireframe(xx, yy, regr.predict(X).reshape(20,20))
-ax.plot_surface(xx, yy, regr.predict(X).reshape(20,20), alpha=0.3)
+ax.plot_surface(xx, yy, regr.predict(X).reshape(20,20), alpha=0.5)
 plt.savefig('test4.png')
 plt.show()
