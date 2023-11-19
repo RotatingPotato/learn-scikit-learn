@@ -45,7 +45,7 @@ ax = fig.add_subplot(111, projection='3d')
 
 #使用 Salary 列作為颜色映射的依据
 cmap = LinearSegmentedColormap.from_list('custom_cmap', ['green','yellow','orange', 'red'])
-scatter = ax.scatter(data['YearsExperience'], data['EducationLevel'], data['City'], c=data['Salary'], cmap=cmap, s=data['Age']*2, marker='o', edgecolors='none', alpha=0.6)
+scatter = ax.scatter(data['YearsExperience'], data['EducationLevel'], data['City'], c=data['Salary'], cmap=cmap, s=40, marker='o', edgecolors='none', alpha=0.8)
 
 # 設置坐標軸標籤
 ax.set_xlabel('YearsExperience')
