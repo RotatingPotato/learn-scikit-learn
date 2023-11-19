@@ -14,7 +14,7 @@ y = data[['Salary']]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 0)
 
 # 創建一個PolynomialFeatures函式，指定多項式的次數
-poly = PolynomialFeatures(3)
+poly = PolynomialFeatures(4)
 # 將線性特徵轉換為多項式特徵
 X_train_poly = poly.fit_transform(X_train)
 X_test_poly = poly.transform(X_test)
