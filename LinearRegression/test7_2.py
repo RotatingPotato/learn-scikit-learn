@@ -9,7 +9,7 @@ t = fig.suptitle('Polynomial Regression', fontsize=14)
 
 # 散點圖
 ax1 = fig.add_subplot(121, projection='3d')
-cmap = LinearSegmentedColormap.from_list('custom_cmap', ['green','yellow','orange', 'red'])
+cmap = LinearSegmentedColormap.from_list('custom_cmap', ['blue','green','orange', 'red'])
 scatter = ax1.scatter(data['random2'], data['random3'], data['random4'], c=data['random5'], cmap=cmap, s=data['random1'], marker='o', edgecolors='none', alpha=0.8)
 ax1.set_xlabel('random2')
 ax1.set_ylabel('random3')
